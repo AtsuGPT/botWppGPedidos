@@ -1,0 +1,49 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model TipoProduto {
+  id       Int       @id @default(autoincrement())
+  nome     String    @unique
+  produtos Produto[]
+}
+
+model Marca {
+  id      Int      @id @default(autoincrement())
+  nome    String   @unique
+  modelos Modelo[]
+}
+
+model Modelo {
+  id       Int      @id @default(autoincrement())
+  nome     String   @unique
+  marca    Marca    @relation(fields: [marcaId], references: [id])
+  marcaId  Int
+  produtos Produto[]
+}
+
+model Qualidade {
+  id       Int       @id @default(autoincrement())
+  nome     String    @unique
+  produtos Produto[]
+}
+
+model Produto {
+  id          Int       @id @default(autoincrement())
+  preco       Float
+  estoque     Int
+
+  tipo        TipoProduto @relation(fields: [tipoId], references: [id])
+  tipoId      Int
+
+  modelo      Modelo @relation(fields: [modeloId], references: [id])
+  modeloId    Int
+
+  qualidade   Qualidade @relation(fields: [qualidadeId], references: [id])
+  qualidadeId Int
+}
