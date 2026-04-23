@@ -47,3 +47,19 @@ model Produto {
   qualidade   Qualidade @relation(fields: [qualidadeId], references: [id])
   qualidadeId Int
 }
+model Pedido {
+  id        String          @id @default(uuid()) // Gera um ID aleatório único (UUID)
+  numero    Int             @unique @default(autoincrement()) // Número sequencial para facilitar a leitura humana
+  status    String          @default("RESERVADO") // RESERVADO, PAGO, CANCELADO
+  items     ItemPedido[]
+  createdAt DateTime        @default(now())
+}
+
+model ItemPedido {
+  id        String  @id @default(uuid())
+  pedidoId  String
+  pedido    Pedido  @relation(fields: [pedidoId], references: [id])
+  produtoId Int
+  produto   Produto @relation(fields: [produtoId], references: [id])
+  quantidade Int
+}

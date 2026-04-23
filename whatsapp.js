@@ -62,6 +62,19 @@ async function start() {
 
     const remoteJid = msg.key.remoteJid;
 
+    const gatilhos = ["menu", "opções", "iniciar", "começar", "oi", "olá", "bom dia", "boa tarde", "listar"];
+
+    //mensagem inicial com menu de opções
+
+    if (gatilhos.includes(texto.toLowerCase())) {
+      await listarProdutos(remoteJid, sock);
+      await sock.sendMessage(remoteJid, { text: "Bem vindos a loja!\n\n✨Digite 'listar' para ver todos os produtos ou 'buscar [termo]' para encontrar algo específico." });
+    }
+    if (!gatilhos.includes(texto.toLowerCase())) {
+      await sock.sendMessage(remoteJid, { text: "Comando não reconhecido. Digite 'menu' para ver as opções." });
+    }
+
+
     //Comandos - Botões inicias
     const selectionId = msg.message?.listResponseMessage?.singleSelectReply?.selectedRowId;
       if (selectionId === "listar") {
@@ -77,7 +90,7 @@ async function start() {
         await sock.sendMessage(remoteJid, { text: "Digite o nome da peça ou marca que deseja buscar:" });
       }
 
-      
+
     // ADMIN CADASTRO
     if (texto.startsWith("admin add")) {
       if (!isAdmin(msg)) {
