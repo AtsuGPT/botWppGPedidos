@@ -1,6 +1,6 @@
 const { default: makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, DisconnectReason } = require("@whiskeysockets/baileys");
 const qrcode = require("qrcode-terminal");
-const { buscarProduto, cadastrarPeca } = require("./service");
+const { buscarProduto, cadastrarPeca } = require("./service.js");
 
 const ADMINS = ["165528073142341@lid"];
 
@@ -62,6 +62,22 @@ async function start() {
 
     const remoteJid = msg.key.remoteJid;
 
+    //Comandos - Botões inicias
+    const selectionId = msg.message?.listResponseMessage?.singleSelectReply?.selectedRowId;
+      if (selectionId === "listar") {
+        const produtos = await buscarProduto();
+        if (produtos.length === 0) {
+          await sock.sendMessage(remoteJid, { text: "❌ Nenhum produto encontrado." });
+          return;
+        }
+        let resposta = `📦 *Resultados (${produtos.length}):*\n\n`; //cria a resposta e soma com os dados achados no db //
+        produtos.forEach(p => { resposta += `*${p.tipo.nome} ${p.modelo.marca.nome} ${p.modelo.nome}*\n✨ ${p.qualidade.nome} | 💰` });
+        await sock.sendMessage(remoteJid, { text: resposta });
+      } else if (selectionId === "buscar") {
+        await sock.sendMessage(remoteJid, { text: "Digite o nome da peça ou marca que deseja buscar:" });
+      }
+
+      
     // ADMIN CADASTRO
     if (texto.startsWith("admin add")) {
       if (!isAdmin(msg)) {
@@ -80,7 +96,7 @@ async function start() {
       return;
     }
 
-    //BUSCA E LISTAGEM DE PRODUTOS
+    //BUSCA E LISTAGEM DE PRODUTOS ===== TROCAR PARA UM MENU DE OPÇÕES FUTURAMENTE
     if (texto.toLowerCase().startsWith("lista") || texto.toLowerCase() === "listar") {
       const termo = texto.split(" ").slice(1).join(" ");
       

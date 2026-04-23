@@ -1,5 +1,4 @@
-const { pool } = require("./db");
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function cadastrarPeca({ tipo, marca, modelo, qualidade, preco, estoque }) {
@@ -67,4 +66,27 @@ async function buscarProduto(termo = "") {
   }
 }
 
-module.exports = { cadastrarPeca, buscarProduto };
+async function listarProdutos() {
+  const sections = [
+    {
+      title: "Produtos Disponíveis",
+      rows: [
+        { title: "Ver todos os produtos", rowId: "listar", description: "Veja a lista completa de produtos" },
+        { title: "Buscar peça", rowId: "buscar", description: "Encontre uma peça específica" }
+      ]
+    }
+  ];
+  const listMessage = {
+    text: "Escolha uma opção:",
+    footer: "Menu de Produtos",
+    title: "📦 Produtos",
+    buttonText: "Opções",
+    sections
+  };
+  await sock.sendMessage(remoteJid, { listMessage });
+  }
+
+
+
+
+export { cadastrarPeca, buscarProduto };
