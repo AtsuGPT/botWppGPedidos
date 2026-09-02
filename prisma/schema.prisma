@@ -20,9 +20,9 @@ model Marca {
 }
 
 model Modelo {
-  id       Int      @id @default(autoincrement())
-  nome     String   @unique
-  marca    Marca    @relation(fields: [marcaId], references: [id])
+  id       Int       @id @default(autoincrement())
+  nome     String    @unique
+  marca    Marca     @relation(fields: [marcaId], references: [id])
   marcaId  Int
   produtos Produto[]
 }
@@ -34,32 +34,34 @@ model Qualidade {
 }
 
 model Produto {
-  id          Int       @id @default(autoincrement())
-  preco       Float
-  estoque     Int
+  id      Int   @id @default(autoincrement())
+  preco   Float
+  estoque Int
 
-  tipo        TipoProduto @relation(fields: [tipoId], references: [id])
-  tipoId      Int
+  tipo   TipoProduto @relation(fields: [tipoId], references: [id])
+  tipoId Int
 
-  modelo      Modelo @relation(fields: [modeloId], references: [id])
-  modeloId    Int
+  modelo   Modelo @relation(fields: [modeloId], references: [id])
+  modeloId Int
 
-  qualidade   Qualidade @relation(fields: [qualidadeId], references: [id])
+  qualidade   Qualidade    @relation(fields: [qualidadeId], references: [id])
   qualidadeId Int
+  itemPedidos ItemPedido[]
 }
+
 model Pedido {
-  id        String          @id @default(uuid()) // Gera um ID aleatório único (UUID)
-  numero    Int             @unique @default(autoincrement()) // Número sequencial para facilitar a leitura humana
-  status    String          @default("RESERVADO") // RESERVADO, PAGO, CANCELADO
+  id        String       @id @default(uuid()) // Gera um ID aleatório único (UUID)
+  numero    Int          @unique @default(autoincrement()) // Número sequencial para facilitar a leitura humana
+  status    String       @default("RESERVADO") // RESERVADO, PAGO, CANCELADO
   items     ItemPedido[]
-  createdAt DateTime        @default(now())
+  createdAt DateTime     @default(now())
 }
 
 model ItemPedido {
-  id        String  @id @default(uuid())
-  pedidoId  String
-  pedido    Pedido  @relation(fields: [pedidoId], references: [id])
-  produtoId Int
-  produto   Produto @relation(fields: [produtoId], references: [id])
+  id         String  @id @default(uuid())
+  pedidoId   String
+  pedido     Pedido  @relation(fields: [pedidoId], references: [id])
+  produtoId  Int
+  produto    Produto @relation(fields: [produtoId], references: [id])
   quantidade Int
 }

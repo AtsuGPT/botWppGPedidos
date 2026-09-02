@@ -1,28 +1,39 @@
-const { Client } = require('pg');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'postgres',
-    password: '2108',
-    port: 5433,
-});
+async function buscarProdutos(termo) {
+  const resultados = await prisma.produto.findMany({
+    where: {
+      OR: [
+        { tipo: { nome: { contains: termo, mode: 'insensitive' } } },
+        { modelo: { nome: { contains: termo, mode: 'insensitive' } } },
+        { modelo: { marca: { nome: { contains: termo, mode: 'insensitive' } } } },
+      ],
+    },
+    include: {
+      tipo: true,
+      modelo: {
+        include: {
+          marca: true,
+        },
+      },
+      qualidade: true,
+    },
+  });
 
-async function conectar() {
-    await client.connect();
-    console.log('Conectado a PostgreSQL');
-}
-
-conectar();
-
-async function buscarProdutos(nome) {
-    const resultado = await client.query('SELECT * FROM produtos WHERE nome = $1', [nome]);
-    return resultado.rows[0];
+  return resultados;
 }
 
 async function testar() {
-    const produto = await buscarProdutos('arroz');
-    console.log(produto);
+  try {
+    console.log('Conectando ao banco via Prisma...');
+    const produtos = await buscarProdutos('tela');
+    console.log('Produtos encontrados:', JSON.stringify(produtos, null, 2));
+  } catch (error) {
+    console.error('Erro na consulta:', error);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 testar();

@@ -44,7 +44,6 @@ async function cadastrarPeca({ tipo, marca, modelo, qualidade, preco, estoque })
 
 async function buscarProduto(termo = "") {
   try {
-    // Se não houver termo, findMany traz tudo. Se houver, ele filtra.
     const produtos = await prisma.produto.findMany({
       where: termo ? {
         OR: [
@@ -85,6 +84,8 @@ async function listarProdutos() {
   };
   await sock.sendMessage(remoteJid, { listMessage });
   }
+
+
 
 
 
