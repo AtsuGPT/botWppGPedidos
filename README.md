@@ -2,6 +2,7 @@
 
 > Bot inteligente para WhatsApp voltado à consulta de estoque, busca de peças e gestão de catálogo de assistência técnica, construído com Node.js, Baileys e PostgreSQL.
 
+
 ---
 
 ### Tecnologias Utilizadas
@@ -38,6 +39,12 @@ A escolha do **Prisma** como ponte com o PostgreSQL trouxe robustez e manutenibi
 - **Gestão de Catálogo (Admin):** Área administrativa restrita para inserção dinâmica de novos produtos via comandos de texto estruturados.
 - **Estrutura Relacional Robusta:** Separação estrita entre Tipos de Produto, Marcas, Modelos e Qualidades.
 - **Reutlizavel:** Pode gerenciar pedidos de diversos tipos de serviços, lojas com propositos dstintos.
+
+---
+
+### Demonstração
+
+<img width="739" height="1600" alt="image" src="https://github.com/user-attachments/assets/75eed194-9d75-485e-9a67-a7c950600c47" />
 
 ---
 
