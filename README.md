@@ -41,7 +41,7 @@ A escolha do **Prisma** como ponte com o PostgreSQL trouxe robustez e manutenibi
 
 ---
 
-### 📦 Como Executar o Projeto Localmente
+### Como Executar o Projeto Localmente
 
 #### 1. Clone o repositório:
 \`\`\`bash
